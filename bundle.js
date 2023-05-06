@@ -14,8 +14,18 @@
             callback(data);
           });
         }
-        createNewUser(handle, password) {
+        createNewUser(username, pass, callback) {
           const urlSuffix = "users";
+          fetch(`${this.baseURL}${urlSuffix}`, {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ "user": { handle: username, password: pass } })
+          }).then((response) => response.json()).then((data) => {
+            callback(data);
+          });
         }
         createNewSession(handle, password) {
           const urlSuffix = "sessions";
@@ -72,11 +82,41 @@
           this.model = model2;
           this.client = client2;
           this.viewGetAllPeeps();
+          const submitButtonCreateUserEl = document.querySelector("#submit-button-create-user");
+          submitButtonCreateUserEl.addEventListener("click", () => this.viewCreateNewUser());
         }
         viewGetAllPeeps() {
           this.client.getAllPeeps((repoData) => {
             this.displayAllPeeps(repoData);
           });
+        }
+        viewCreateNewUser() {
+          const userNameEl = document.querySelector("#user-name-input");
+          const userPasswordEl = document.querySelector("#user-password-input");
+          const userName = userNameEl.value;
+          if (userNameEl.value !== "" && userPasswordEl.value !== "") {
+            this.client.createNewUser(userNameEl.value, userPasswordEl.value, (repoData) => {
+              if (Object.values(repoData).includes(userName)) {
+                userNameEl.value = "";
+                userPasswordEl.value = "";
+                this.displayMessage("Welcome to Chitter!", "success");
+              } else {
+                this.displayMessage("Registration failed, try another user name.", "failure");
+              }
+            });
+          }
+        }
+        displayMessage(message, status) {
+          const messageEl = document.querySelector("#message");
+          if (status === "success") {
+            messageEl.style.color = "darkblue";
+          } else {
+            messageEl.style.color = "red";
+          }
+          messageEl.innerText = message;
+          setTimeout(() => {
+            messageEl.innerText = "";
+          }, 3e3);
         }
         displayAllPeeps(allPeepsCollection) {
           console.log(allPeepsCollection);
