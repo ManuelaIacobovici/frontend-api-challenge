@@ -1,6 +1,6 @@
-const GithubClient = require("./githubClient");
-const GithubModel = require("./githubModel");
-const GithubView = require("./githubView");
+const GithubClient = require("./chitterClient");
+const GithubModel = require("./chitterModel");
+const GithubView = require("./chitterView");
 
 const client = new GithubClient();
 const model = new GithubModel();

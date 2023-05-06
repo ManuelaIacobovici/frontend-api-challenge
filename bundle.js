@@ -4,9 +4,9 @@
     return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
   };
 
-  // githubClient.js
-  var require_githubClient = __commonJS({
-    "githubClient.js"(exports, module) {
+  // chitterClient.js
+  var require_chitterClient = __commonJS({
+    "chitterClient.js"(exports, module) {
       var GithubClient2 = class {
         getRepoInfo(repoName, callback) {
           fetch("https://api.github.com/repos/" + repoName).then((response) => response.json()).then((data) => {
@@ -18,9 +18,9 @@
     }
   });
 
-  // githubModel.js
-  var require_githubModel = __commonJS({
-    "githubModel.js"(exports, module) {
+  // chitterModel.js
+  var require_chitterModel = __commonJS({
+    "chitterModel.js"(exports, module) {
       var GithubModel2 = class {
         constructor() {
           this.repoInfo = null;
@@ -36,9 +36,9 @@
     }
   });
 
-  // githubView.js
-  var require_githubView = __commonJS({
-    "githubView.js"(exports, module) {
+  // chitterView.js
+  var require_chitterView = __commonJS({
+    "chitterView.js"(exports, module) {
       var GithubView2 = class {
         constructor(model2, client2) {
           this.model = model2;
@@ -70,9 +70,9 @@
   });
 
   // index.js
-  var GithubClient = require_githubClient();
-  var GithubModel = require_githubModel();
-  var GithubView = require_githubView();
+  var GithubClient = require_chitterClient();
+  var GithubModel = require_chitterModel();
+  var GithubView = require_chitterView();
   var client = new GithubClient();
   var model = new GithubModel();
   var view = new GithubView(model, client);

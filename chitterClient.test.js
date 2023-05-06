@@ -1,5 +1,5 @@
 
-const GithubClient = require('./githubClient');
+const GithubClient = require('./chitterClient');
 
 // This makes `fetch` available to our test
 // (it is not by default, as normally `fetch` is only
