@@ -27,8 +27,18 @@
             callback(data);
           });
         }
-        createNewSession(handle, password) {
+        createNewSession(username, pass, callback) {
           const urlSuffix = "sessions";
+          fetch(`${this.baseURL}${urlSuffix}`, {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ "session": { handle: username, password: pass } })
+          }).then((response) => response.json()).then((data) => {
+            callback(data);
+          });
         }
         getAllPeeps(callback) {
           const urlSuffix = "peeps";
@@ -84,6 +94,13 @@
           this.viewGetAllPeeps();
           const submitButtonCreateUserEl = document.querySelector("#submit-button-create-user");
           submitButtonCreateUserEl.addEventListener("click", () => this.viewCreateNewUser());
+          const submitButtonLoginUserEl = document.querySelector("#submit-button-login-user");
+          submitButtonLoginUserEl.addEventListener("click", () => this.viewLoginUser());
+          const submitButtonLogoutUserEl = document.querySelector("#submit-button-logout-user");
+          submitButtonLogoutUserEl.addEventListener("click", () => this.viewLogoutUser());
+          if (sessionStorage.getItem("token") !== void 0 && sessionStorage.getItem("token") !== null) {
+            this.userIsLoggedIn();
+          }
         }
         viewGetAllPeeps() {
           this.client.getAllPeeps((repoData) => {
@@ -105,6 +122,32 @@
               }
             });
           }
+        }
+        viewLoginUser() {
+          const userNameEl = document.querySelector("#user-name-input");
+          const userPasswordEl = document.querySelector("#user-password-input");
+          if (userNameEl.value !== "" && userPasswordEl.value !== "") {
+            this.client.createNewSession(userNameEl.value, userPasswordEl.value, (repoData) => {
+              if (Object.keys(repoData).includes("session_key")) {
+                userNameEl.value = "";
+                userPasswordEl.value = "";
+                this.userIsLoggedIn();
+                sessionStorage.setItem("token", repoData.session_key);
+              } else {
+                this.displayMessage("Login failure! Please check the user name and password.", "failure");
+              }
+            });
+          }
+        }
+        viewLogoutUser() {
+          sessionStorage.removeItem("token");
+          location.reload();
+        }
+        userIsLoggedIn() {
+          const loginCreateEl = document.querySelector("#login-create");
+          loginCreateEl.style.display = "none";
+          const logoutEl = document.querySelector("#submit-button-logout-user");
+          logoutEl.style.display = "inline-block";
         }
         displayMessage(message, status) {
           const messageEl = document.querySelector("#message");

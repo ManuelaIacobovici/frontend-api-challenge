@@ -11,23 +11,36 @@ class ChitterClient {
 
   createNewUser(username, pass, callback) {
     const urlSuffix = 'users';
-      fetch(`${this.baseURL}${urlSuffix}`,{
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({"user": {handle: username, password: pass}})
-      })
-        .then(response => response.json()) // 1. convert JSON to JS object
-        .then(data => {
-          // 2. `data` is now a full JS object, so we can access its properties
-          callback(data)
-        });
+    fetch(`${this.baseURL}${urlSuffix}`,{
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"user": {handle: username, password: pass}})
+    })
+      .then(response => response.json()) // 1. convert JSON to JS object
+      .then(data => {
+        // 2. `data` is now a full JS object, so we can access its properties
+        callback(data)
+      });
   }
 
-  createNewSession(handle, password) {
+  createNewSession(username, pass, callback) {
     const urlSuffix = 'sessions';
+    fetch(`${this.baseURL}${urlSuffix}`,{
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"session": {handle: username, password: pass}})
+    })
+      .then(response => response.json()) // 1. convert JSON to JS object
+      .then(data => {
+        // 2. `data` is now a full JS object, so we can access its properties
+        callback(data)
+      });
   }
 
   getAllPeeps(callback) {

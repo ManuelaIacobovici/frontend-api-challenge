@@ -7,9 +7,14 @@
       <h1 style="padding-left: 1.25rem; padding-right: 1.25rem">
         Chitter
         <div style="float: right">
-          <input type="text" placeholder="Name" id="user-name-input">
-          <input type="password" placeholder="Password" id="user-password-input">
-          <input type="submit" value="Create Account" id="submit-button-create-user">
+          <div id="login-create" style="display: inline">
+            <input type="text" placeholder="Name" id="user-name-input">
+            <input type="password" placeholder="Password" id="user-password-input">
+            <input type="submit" value="Log In" id="submit-button-login-user">
+            <input type="submit" value="Create Account" id="submit-button-create-user">
+          </div>
+          <input type="submit" style="display: none" value="Logout" id="submit-button-logout-user">
+        
         </div>
       </h1>
       <h3 id="message" style="opacity: 0.8; text-align: center; color: darkblue"></h3>
