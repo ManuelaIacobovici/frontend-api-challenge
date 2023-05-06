@@ -7,21 +7,46 @@
   // chitterClient.js
   var require_chitterClient = __commonJS({
     "chitterClient.js"(exports, module) {
-      var GithubClient2 = class {
+      var ChitterClient2 = class {
+        baseURL = "https://chitter-backend-api-v2.herokuapp.com/";
         getRepoInfo(repoName, callback) {
           fetch("https://api.github.com/repos/" + repoName).then((response) => response.json()).then((data) => {
             callback(data);
           });
         }
+        createNewUser(handle, password) {
+          const urlSuffix = "users";
+        }
+        createNewSession(handle, password) {
+          const urlSuffix = "sessions";
+        }
+        getAllPeeps() {
+          const urlSuffix = "peeps";
+        }
+        createNewPeep(userId, body) {
+          const urlSuffix = "peeps";
+        }
+        getPeepById(id) {
+          const urlSuffix = `peeps/${id}`;
+        }
+        deletePeepById(id, token, userId) {
+          const urlSuffix = `peeps/${id}`;
+        }
+        setPeepLike(id, token, userId) {
+          const urlSuffix = `peeps/${id}/likes/1`;
+        }
+        setPeepUnlike(id, token, userId) {
+          const urlSuffix = `peeps/${id}/likes/1`;
+        }
       };
-      module.exports = GithubClient2;
+      module.exports = ChitterClient2;
     }
   });
 
   // chitterModel.js
   var require_chitterModel = __commonJS({
     "chitterModel.js"(exports, module) {
-      var GithubModel2 = class {
+      var ChitterModel2 = class {
         constructor() {
           this.repoInfo = null;
         }
@@ -32,14 +57,14 @@
           return this.repoInfo;
         }
       };
-      module.exports = GithubModel2;
+      module.exports = ChitterModel2;
     }
   });
 
   // chitterView.js
   var require_chitterView = __commonJS({
     "chitterView.js"(exports, module) {
-      var GithubView2 = class {
+      var ChitterView2 = class {
         constructor(model2, client2) {
           this.model = model2;
           this.client = client2;
@@ -65,15 +90,15 @@
           repoImageEl.setAttribute("src", imageSource);
         }
       };
-      module.exports = GithubView2;
+      module.exports = ChitterView2;
     }
   });
 
   // index.js
-  var GithubClient = require_chitterClient();
-  var GithubModel = require_chitterModel();
-  var GithubView = require_chitterView();
-  var client = new GithubClient();
-  var model = new GithubModel();
-  var view = new GithubView(model, client);
+  var ChitterClient = require_chitterClient();
+  var ChitterModel = require_chitterModel();
+  var ChitterView = require_chitterView();
+  var client = new ChitterClient();
+  var model = new ChitterModel();
+  var view = new ChitterView(model, client);
 })();

@@ -1,4 +1,4 @@
-class GithubModel {
+class ChitterModel {
   constructor() {
     this.repoInfo = null
   }
@@ -12,4 +12,4 @@ class GithubModel {
   }
 }
 
-module.exports = GithubModel;
+module.exports = ChitterModel;

@@ -1,14 +1,14 @@
 
-const GithubClient = require('./chitterClient');
+const ChitterClient = require('./chitterClient');
 
 // This makes `fetch` available to our test
 // (it is not by default, as normally `fetch` is only
 // available within the browser)
 require('jest-fetch-mock').enableMocks()
 
-describe('GithubClient class', () => {
+describe('ChitterClient class', () => {
   it('calls fetch and loads repo info', (done) => {
-    const client = new GithubClient();
+    const client = new ChitterClient();
     fetch.mockResponseOnce(JSON.stringify({
       name: 'rails/rails',
       description: 'Ruby on Rails'
