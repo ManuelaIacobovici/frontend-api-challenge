@@ -18,7 +18,11 @@ class ChitterView {
     const submitButtonLogoutUserEl = document.querySelector('#submit-button-logout-user');
     submitButtonLogoutUserEl.addEventListener('click', () => this.viewLogoutUser());
 
-    if(sessionStorage.getItem('token') !== undefined && sessionStorage.getItem('token') !== null){
+    const submitButtonPeepEl = document.querySelector('#submit-button-peep');
+    submitButtonPeepEl.addEventListener('click', () => this.viewCreatePeep());
+
+    const token = sessionStorage.getItem('token')
+    if(token !== undefined && token !== null){
       this.userIsLoggedIn()
     }
   }
@@ -56,6 +60,7 @@ class ChitterView {
           userNameEl.value = '';
           userPasswordEl.value = '';
           this.userIsLoggedIn()
+          sessionStorage.setItem('userId', repoData.user_id)
           sessionStorage.setItem('token', repoData.session_key)
         } else {
           this.displayMessage("Login failure! Please check the user name and password.", "failure")
@@ -67,6 +72,15 @@ class ChitterView {
   viewLogoutUser(){
     sessionStorage.removeItem('token')
     location.reload()
+  }
+
+  viewCreatePeep() {
+    const peepEl = document.querySelector('#peep-body');
+    this.client.createNewPeep(peepEl.value, () => {
+      const peepEl = document.querySelector('#peep-body');
+      peepEl.value = '';
+      this.viewGetAllPeeps()
+    });
   }
 
   userIsLoggedIn(){

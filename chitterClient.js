@@ -53,8 +53,25 @@ class ChitterClient {
       });
   }
 
-  createNewPeep(userId, body) {
+  createNewPeep(peepBody, callback) {
     const urlSuffix = 'peeps';
+    const token = sessionStorage.getItem('token');
+    const userId = sessionStorage.getItem('userId'); 
+    if(token !== undefined && token !== null){
+      fetch(`${this.baseURL}${urlSuffix}`,{
+        method: 'POST',
+        headers: new Headers({
+          'Authorization': 'Token  token=' + token, 
+          'Content-Type': 'application/json'
+      }),
+        body: JSON.stringify({"peep": {user_id: userId, body: peepBody}})
+      })
+        .then(response => response.json()) // 1. convert JSON to JS object
+        .then(data => {
+          // 2. `data` is now a full JS object, so we can access its properties
+          callback(data)
+        });
+    }
   }
 
   getPeepById(id) {

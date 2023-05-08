@@ -46,8 +46,22 @@
             callback(data);
           });
         }
-        createNewPeep(userId, body) {
+        createNewPeep(peepBody, callback) {
           const urlSuffix = "peeps";
+          const token = sessionStorage.getItem("token");
+          const userId = sessionStorage.getItem("userId");
+          if (token !== void 0 && token !== null) {
+            fetch(`${this.baseURL}${urlSuffix}`, {
+              method: "POST",
+              headers: new Headers({
+                "Authorization": "Token  token=" + token,
+                "Content-Type": "application/json"
+              }),
+              body: JSON.stringify({ "peep": { user_id: userId, body: peepBody } })
+            }).then((response) => response.json()).then((data) => {
+              callback(data);
+            });
+          }
         }
         getPeepById(id) {
           const urlSuffix = `peeps/${id}`;
@@ -98,7 +112,10 @@
           submitButtonLoginUserEl.addEventListener("click", () => this.viewLoginUser());
           const submitButtonLogoutUserEl = document.querySelector("#submit-button-logout-user");
           submitButtonLogoutUserEl.addEventListener("click", () => this.viewLogoutUser());
-          if (sessionStorage.getItem("token") !== void 0 && sessionStorage.getItem("token") !== null) {
+          const submitButtonPeepEl = document.querySelector("#submit-button-peep");
+          submitButtonPeepEl.addEventListener("click", () => this.viewCreatePeep());
+          const token = sessionStorage.getItem("token");
+          if (token !== void 0 && token !== null) {
             this.userIsLoggedIn();
           }
         }
@@ -132,6 +149,7 @@
                 userNameEl.value = "";
                 userPasswordEl.value = "";
                 this.userIsLoggedIn();
+                sessionStorage.setItem("userId", repoData.user_id);
                 sessionStorage.setItem("token", repoData.session_key);
               } else {
                 this.displayMessage("Login failure! Please check the user name and password.", "failure");
@@ -142,6 +160,14 @@
         viewLogoutUser() {
           sessionStorage.removeItem("token");
           location.reload();
+        }
+        viewCreatePeep() {
+          const peepEl = document.querySelector("#peep-body");
+          this.client.createNewPeep(peepEl.value, () => {
+            const peepEl2 = document.querySelector("#peep-body");
+            peepEl2.value = "";
+            this.viewGetAllPeeps();
+          });
         }
         userIsLoggedIn() {
           const loginCreateEl = document.querySelector("#login-create");
