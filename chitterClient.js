@@ -78,17 +78,31 @@ class ChitterClient {
     const urlSuffix = `peeps/${id}`;
   }
 
-  deletePeepById(id, token, userId) {
+  deletePeepById(id, callback) {
     const urlSuffix = `peeps/${id}`;
+    const token = sessionStorage.getItem('token');
+    const userId = sessionStorage.getItem('userId'); 
+    if(token !== undefined && token !== null){
+      fetch(`${this.baseURL}${urlSuffix}`,{
+        method: 'DELETE',
+        headers: new Headers({
+          'Authorization': 'Token  token=' + token
+        })
+      })
+        .then(data => {
+          // 2. `data` is now a full JS object, so we can access its properties
+          callback(data)
+        });
+    }
   }
   
-  setPeepLike(id, token, userId) {
-    const urlSuffix = `peeps/${id}/likes/1`;
-  }
+  // setPeepLike(id, token, userId) {
+  //   const urlSuffix = `peeps/${id}/likes/1`;
+  // }
 
-  setPeepUnlike(id, token, userId) {
-    const urlSuffix = `peeps/${id}/likes/1`;
-  }
+  // setPeepUnlike(id, token, userId) {
+  //   const urlSuffix = `peeps/${id}/likes/1`;
+  // }
 }
 
 module.exports = ChitterClient;

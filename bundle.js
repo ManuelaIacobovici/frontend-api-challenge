@@ -66,15 +66,27 @@
         getPeepById(id) {
           const urlSuffix = `peeps/${id}`;
         }
-        deletePeepById(id, token, userId) {
+        deletePeepById(id, callback) {
           const urlSuffix = `peeps/${id}`;
+          const token = sessionStorage.getItem("token");
+          const userId = sessionStorage.getItem("userId");
+          if (token !== void 0 && token !== null) {
+            fetch(`${this.baseURL}${urlSuffix}`, {
+              method: "DELETE",
+              headers: new Headers({
+                "Authorization": "Token  token=" + token
+              })
+            }).then((data) => {
+              callback(data);
+            });
+          }
         }
-        setPeepLike(id, token, userId) {
-          const urlSuffix = `peeps/${id}/likes/1`;
-        }
-        setPeepUnlike(id, token, userId) {
-          const urlSuffix = `peeps/${id}/likes/1`;
-        }
+        // setPeepLike(id, token, userId) {
+        //   const urlSuffix = `peeps/${id}/likes/1`;
+        // }
+        // setPeepUnlike(id, token, userId) {
+        //   const urlSuffix = `peeps/${id}/likes/1`;
+        // }
       };
       module.exports = ChitterClient2;
     }
@@ -151,6 +163,7 @@
                 this.userIsLoggedIn();
                 sessionStorage.setItem("userId", repoData.user_id);
                 sessionStorage.setItem("token", repoData.session_key);
+                this.viewGetAllPeeps();
               } else {
                 this.displayMessage("Login failure! Please check the user name and password.", "failure");
               }
@@ -174,6 +187,8 @@
           loginCreateEl.style.display = "none";
           const logoutEl = document.querySelector("#submit-button-logout-user");
           logoutEl.style.display = "inline-block";
+          const peepGroupEL = document.querySelector("#peep-group");
+          peepGroupEL.style.display = "inline-block";
         }
         displayMessage(message, status) {
           const messageEl = document.querySelector("#message");
@@ -188,27 +203,54 @@
           }, 3e3);
         }
         displayAllPeeps(allPeepsCollection) {
-          console.log(allPeepsCollection);
           const container = document.querySelector("#peeps-container");
           container.innerHTML = "";
           allPeepsCollection.forEach((peep) => {
             const peepContainer = document.createElement("div");
-            peepContainer.insertAdjacentText("afterbegin", peep.body);
-            peepContainer.style.cssText = "width: calc(100% - 4rem); padding: 1.25rem 2rem; border-bottom:solid 1px lightgrey";
+            peepContainer.style.cssText = "margin-left: 0.25rem;width: calc(100% - 4rem); padding: 1rem 2rem 0.75rem 1.25rem; border-bottom:solid 1px lightgrey";
+            this.addPeeper(peep, peepContainer);
+            this.addPeepBody(peep, peepContainer);
+            this.addLikes(peep, peepContainer);
+            const token = sessionStorage.getItem("token");
+            if (token !== void 0 && token !== null) {
+              this.addDeleteButton(peep, peepContainer);
+            }
             container.append(peepContainer);
           });
         }
-        // display(repoData) {
-        //    const repoNameEl = document.querySelector('#repo-name');
-        //    const fullName = repoData.full_name;
-        //    repoNameEl.innerText = fullName.split("/")[1];
-        //    const repoDescriptionEl = document.querySelector('#repo-description');
-        //    const description = repoData['description'];
-        //    repoDescriptionEl.innerText = description;
-        //    const repoImageEl = document.querySelector('#repo-image');
-        //    const imageSource = repoData.organization.avatar_url;
-        //    repoImageEl.setAttribute('src', imageSource);
-        // }
+        addPeeper(peep, peepContainer) {
+          const userNameEl = document.createElement("div");
+          userNameEl.style.cssText = "font-family: arial;  opacity: 0.9;";
+          userNameEl.insertAdjacentText("afterbegin", `${peep.user.handle}: `);
+          peepContainer.insertAdjacentElement("beforeend", userNameEl);
+        }
+        addPeepBody(peep, peepContainer) {
+          const peepEl = document.createElement("div");
+          peepEl.style.cssText = "padding: 0.75rem 1rem 0rem 9rem; font-size:1.15em; font-family: Helvetica; color: grey";
+          peepEl.insertAdjacentText("afterbegin", `${peep.body}`);
+          peepContainer.insertAdjacentElement("beforeend", peepEl);
+        }
+        addLikes(peep, peepContainer) {
+          const likesEl = document.createElement("div");
+          likesEl.style.cssText = "font-family: arial;  opacity: 0.9; ";
+          likesEl.insertAdjacentHTML("afterbegin", '<i class="fa fa-thumbs-up" style="font-size:1.25em; color: #185dcc"></i>');
+          likesEl.insertAdjacentText("afterbegin", `${peep.likes.length} `);
+          peepContainer.insertAdjacentElement("beforeend", likesEl);
+        }
+        addDeleteButton(peep, peepContainer) {
+          if (peep.user.id == sessionStorage.getItem("userId")) {
+            const deleteButtonEl = document.createElement("input");
+            deleteButtonEl.setAttribute("type", "button");
+            deleteButtonEl.setAttribute("value", "X");
+            deleteButtonEl.setAttribute("style", "float: right; color: red; margin-right: -1.5rem; margin-top: -1rem;");
+            const newButton = peepContainer.insertAdjacentElement("beforeend", deleteButtonEl);
+            newButton.addEventListener("click", () => {
+              this.client.deletePeepById(peep.id, () => {
+                this.viewGetAllPeeps();
+              });
+            });
+          }
+        }
       };
       module.exports = ChitterView2;
     }
