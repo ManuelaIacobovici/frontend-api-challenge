@@ -1,40 +1,67 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>Chitter App</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    </head>
-    <body>
-      <h1 style="padding-left: 1.25rem; padding-right: 1.25rem">
-        Chitter
-        <div style="float: right">
-          <div id="login-create" style="display: inline">
-            <input type="text" placeholder="Name" id="user-name-input">
-            <input type="password" placeholder="Password" id="user-password-input">
-            <input type="submit" value="Log In" id="submit-button-login-user">
-            <input type="submit" value="Create Account" id="submit-button-create-user">
-          </div>
-          <input type="submit" style="display: none" value="Logout" id="submit-button-logout-user">
+  <head>
+    <title>Chitter App</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
+    <h1 style="padding-left: 1.25rem; padding-right: 1.25rem">
+      Chitter
+      <div style="float: right">
+        <div id="login-create" style="display: inline">
+          <input type="text" placeholder="Name" id="user-name-input" />
+          <input
+            type="password"
+            placeholder="Password"
+            id="user-password-input"
+          />
+          <input type="submit" value="Log In" id="submit-button-login-user" />
+          <input
+            type="submit"
+            value="Create Account"
+            id="submit-button-create-user"
+          />
         </div>
-        <hr style="border: none; height: 1px; background-color: lightgrey">
-       <div id="peep-group" style="width: 100%; display: none;"> 
-        <input type="text" placeholder="Peep that deep!" id="peep-body" style="width: calc(100% - 5.6rem)">
-        <input type="submit" value="Peep" id="submit-button-peep" style="width: 3.6rem; margin-left: 1rem">
+        <input
+          type="submit"
+          style="display: none"
+          value="Logout"
+          id="submit-button-logout-user"
+        />
       </div>
-      </h1>
-      <h3 id="message" style="opacity: 0.8; text-align: center; color: darkblue"></h3>
+      <hr style="border: none; height: 1px; background-color: lightgrey" />
+      <div id="peep-group" style="width: 100%; display: none">
+        <input
+          type="text"
+          placeholder="Peep that deep!"
+          id="peep-body"
+          style="width: calc(100% - 5.6rem)"
+        />
+        <input
+          type="submit"
+          value="Peep"
+          id="submit-button-peep"
+          style="width: 3.6rem; margin-left: 1rem"
+        />
+      </div>
+    </h1>
+    <h3
+      id="message"
+      style="opacity: 0.8; text-align: center; color: darkblue"
+    ></h3>
 
-      <!-- User input -->
-      <!-- <p>Enter a github repository name:</p>
-      <input id="repo-name-input" type="text" placeholder="e.g sinatra/sinatra" />
-      <button id="submit-button">Submit</button> -->
+    <div
+      id="peeps-container"
+      style="
+        border: 1px solid lightgrey;
+        width: calc(100% - 2rem);
+        margin: 1rem;
+      "
+    ></div>
 
-      <!-- Repository info -->
-      <div id="peeps-container" style="border: 1px solid lightgrey; width: calc(100% - 2rem); margin: 1rem;"></div>
-
-
-
-
-      <script src="bundle.js"></script>
-    </body>
+    <script src="bundle.js"></script>
+  </body>
 </html>

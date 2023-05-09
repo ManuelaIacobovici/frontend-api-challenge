@@ -1,75 +1,71 @@
 class ChitterClient {
-  baseURL = 'https://chitter-backend-api-v2.herokuapp.com/';
+  baseURL = "https://chitter-backend-api-v2.herokuapp.com/";
   getRepoInfo(repoName, callback) {
-    fetch('https://api.github.com/repos/' + repoName)
-      .then(response => response.json()) // 1. convert JSON to JS object
-      .then(data => {
+    fetch("https://api.github.com/repos/" + repoName)
+      .then((response) => response.json()) // 1. convert JSON to JS object
+      .then((data) => {
         // 2. `data` is now a full JS object, so we can access its properties
-        callback(data)
+        callback(data);
       });
   }
 
   createNewUser(username, pass, callback) {
-    const urlSuffix = 'users';
-    fetch(`${this.baseURL}${urlSuffix}`,{
-      method: 'POST',
+    const urlSuffix = "users";
+    fetch(`${this.baseURL}${urlSuffix}`, {
+      method: "POST",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({"user": {handle: username, password: pass}})
+      body: JSON.stringify({ user: { handle: username, password: pass } }),
     })
-      .then(response => response.json()) // 1. convert JSON to JS object
-      .then(data => {
-        // 2. `data` is now a full JS object, so we can access its properties
-        callback(data)
+      .then((response) => response.json())
+      .then((data) => {
+        callback(data);
       });
   }
 
   createNewSession(username, pass, callback) {
-    const urlSuffix = 'sessions';
-    fetch(`${this.baseURL}${urlSuffix}`,{
-      method: 'POST',
+    const urlSuffix = "sessions";
+    fetch(`${this.baseURL}${urlSuffix}`, {
+      method: "POST",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({"session": {handle: username, password: pass}})
+      body: JSON.stringify({ session: { handle: username, password: pass } }),
     })
-      .then(response => response.json()) // 1. convert JSON to JS object
-      .then(data => {
-        // 2. `data` is now a full JS object, so we can access its properties
-        callback(data)
+      .then((response) => response.json())
+      .then((data) => {
+        callback(data);
       });
   }
 
   getAllPeeps(callback) {
-    const urlSuffix = 'peeps';
+    const urlSuffix = "peeps";
     fetch(`${this.baseURL}${urlSuffix}`)
-      .then(response => response.json()) // 1. convert JSON to JS object
-      .then(data => {
-        // 2. `data` is now a full JS object, so we can access its properties
-        callback(data)
+      .then((response) => response.json())
+      .then((data) => {
+        callback(data);
       });
   }
 
   createNewPeep(peepBody, callback) {
-    const urlSuffix = 'peeps';
-    const token = sessionStorage.getItem('token');
-    const userId = sessionStorage.getItem('userId'); 
-    if(token !== undefined && token !== null){
-      fetch(`${this.baseURL}${urlSuffix}`,{
-        method: 'POST',
+    const urlSuffix = "peeps";
+    const token = sessionStorage.getItem("token");
+    const userId = sessionStorage.getItem("userId");
+    if (token !== undefined && token !== null) {
+      fetch(`${this.baseURL}${urlSuffix}`, {
+        method: "POST",
         headers: new Headers({
-          'Authorization': 'Token  token=' + token, 
-          'Content-Type': 'application/json'
-      }),
-        body: JSON.stringify({"peep": {user_id: userId, body: peepBody}})
+          Authorization: "Token  token=" + token,
+          "Content-Type": "application/json",
+        }),
+        body: JSON.stringify({ peep: { user_id: userId, body: peepBody } }),
       })
-        .then(response => response.json()) // 1. convert JSON to JS object
-        .then(data => {
-          // 2. `data` is now a full JS object, so we can access its properties
-          callback(data)
+        .then((response) => response.json())
+        .then((data) => {
+          callback(data);
         });
     }
   }
@@ -80,22 +76,20 @@ class ChitterClient {
 
   deletePeepById(id, callback) {
     const urlSuffix = `peeps/${id}`;
-    const token = sessionStorage.getItem('token');
-    const userId = sessionStorage.getItem('userId'); 
-    if(token !== undefined && token !== null){
-      fetch(`${this.baseURL}${urlSuffix}`,{
-        method: 'DELETE',
+    const token = sessionStorage.getItem("token");
+    const userId = sessionStorage.getItem("userId");
+    if (token !== undefined && token !== null) {
+      fetch(`${this.baseURL}${urlSuffix}`, {
+        method: "DELETE",
         headers: new Headers({
-          'Authorization': 'Token  token=' + token
-        })
-      })
-        .then(data => {
-          // 2. `data` is now a full JS object, so we can access its properties
-          callback(data)
-        });
+          Authorization: "Token  token=" + token,
+        }),
+      }).then((data) => {
+        callback(data);
+      });
     }
   }
-  
+
   // setPeepLike(id, token, userId) {
   //   const urlSuffix = `peeps/${id}/likes/1`;
   // }

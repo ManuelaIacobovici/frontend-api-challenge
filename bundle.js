@@ -19,10 +19,10 @@
           fetch(`${this.baseURL}${urlSuffix}`, {
             method: "POST",
             headers: {
-              "Accept": "application/json",
+              Accept: "application/json",
               "Content-Type": "application/json"
             },
-            body: JSON.stringify({ "user": { handle: username, password: pass } })
+            body: JSON.stringify({ user: { handle: username, password: pass } })
           }).then((response) => response.json()).then((data) => {
             callback(data);
           });
@@ -32,10 +32,10 @@
           fetch(`${this.baseURL}${urlSuffix}`, {
             method: "POST",
             headers: {
-              "Accept": "application/json",
+              Accept: "application/json",
               "Content-Type": "application/json"
             },
-            body: JSON.stringify({ "session": { handle: username, password: pass } })
+            body: JSON.stringify({ session: { handle: username, password: pass } })
           }).then((response) => response.json()).then((data) => {
             callback(data);
           });
@@ -54,10 +54,10 @@
             fetch(`${this.baseURL}${urlSuffix}`, {
               method: "POST",
               headers: new Headers({
-                "Authorization": "Token  token=" + token,
+                Authorization: "Token  token=" + token,
                 "Content-Type": "application/json"
               }),
-              body: JSON.stringify({ "peep": { user_id: userId, body: peepBody } })
+              body: JSON.stringify({ peep: { user_id: userId, body: peepBody } })
             }).then((response) => response.json()).then((data) => {
               callback(data);
             });
@@ -74,7 +74,7 @@
             fetch(`${this.baseURL}${urlSuffix}`, {
               method: "DELETE",
               headers: new Headers({
-                "Authorization": "Token  token=" + token
+                Authorization: "Token  token=" + token
               })
             }).then((data) => {
               callback(data);
@@ -118,12 +118,27 @@
           this.model = model2;
           this.client = client2;
           this.viewGetAllPeeps();
-          const submitButtonCreateUserEl = document.querySelector("#submit-button-create-user");
-          submitButtonCreateUserEl.addEventListener("click", () => this.viewCreateNewUser());
-          const submitButtonLoginUserEl = document.querySelector("#submit-button-login-user");
-          submitButtonLoginUserEl.addEventListener("click", () => this.viewLoginUser());
-          const submitButtonLogoutUserEl = document.querySelector("#submit-button-logout-user");
-          submitButtonLogoutUserEl.addEventListener("click", () => this.viewLogoutUser());
+          const submitButtonCreateUserEl = document.querySelector(
+            "#submit-button-create-user"
+          );
+          submitButtonCreateUserEl.addEventListener(
+            "click",
+            () => this.viewCreateNewUser()
+          );
+          const submitButtonLoginUserEl = document.querySelector(
+            "#submit-button-login-user"
+          );
+          submitButtonLoginUserEl.addEventListener(
+            "click",
+            () => this.viewLoginUser()
+          );
+          const submitButtonLogoutUserEl = document.querySelector(
+            "#submit-button-logout-user"
+          );
+          submitButtonLogoutUserEl.addEventListener(
+            "click",
+            () => this.viewLogoutUser()
+          );
           const submitButtonPeepEl = document.querySelector("#submit-button-peep");
           submitButtonPeepEl.addEventListener("click", () => this.viewCreatePeep());
           const token = sessionStorage.getItem("token");
@@ -141,33 +156,47 @@
           const userPasswordEl = document.querySelector("#user-password-input");
           const userName = userNameEl.value;
           if (userNameEl.value !== "" && userPasswordEl.value !== "") {
-            this.client.createNewUser(userNameEl.value, userPasswordEl.value, (repoData) => {
-              if (Object.values(repoData).includes(userName)) {
-                userNameEl.value = "";
-                userPasswordEl.value = "";
-                this.displayMessage("Welcome to Chitter!", "success");
-              } else {
-                this.displayMessage("Registration failed, try another user name.", "failure");
+            this.client.createNewUser(
+              userNameEl.value,
+              userPasswordEl.value,
+              (repoData) => {
+                if (Object.values(repoData).includes(userName)) {
+                  userNameEl.value = "";
+                  userPasswordEl.value = "";
+                  this.displayMessage("Welcome to Chitter!", "success");
+                } else {
+                  this.displayMessage(
+                    "Registration failed, try another user name.",
+                    "failure"
+                  );
+                }
               }
-            });
+            );
           }
         }
         viewLoginUser() {
           const userNameEl = document.querySelector("#user-name-input");
           const userPasswordEl = document.querySelector("#user-password-input");
           if (userNameEl.value !== "" && userPasswordEl.value !== "") {
-            this.client.createNewSession(userNameEl.value, userPasswordEl.value, (repoData) => {
-              if (Object.keys(repoData).includes("session_key")) {
-                userNameEl.value = "";
-                userPasswordEl.value = "";
-                this.userIsLoggedIn();
-                sessionStorage.setItem("userId", repoData.user_id);
-                sessionStorage.setItem("token", repoData.session_key);
-                this.viewGetAllPeeps();
-              } else {
-                this.displayMessage("Login failure! Please check the user name and password.", "failure");
+            this.client.createNewSession(
+              userNameEl.value,
+              userPasswordEl.value,
+              (repoData) => {
+                if (Object.keys(repoData).includes("session_key")) {
+                  userNameEl.value = "";
+                  userPasswordEl.value = "";
+                  this.userIsLoggedIn();
+                  sessionStorage.setItem("userId", repoData.user_id);
+                  sessionStorage.setItem("token", repoData.session_key);
+                  this.viewGetAllPeeps();
+                } else {
+                  this.displayMessage(
+                    "Login failure! Please check the user name and password.",
+                    "failure"
+                  );
+                }
               }
-            });
+            );
           }
         }
         viewLogoutUser() {
@@ -233,7 +262,10 @@
         addLikes(peep, peepContainer) {
           const likesEl = document.createElement("div");
           likesEl.style.cssText = "font-family: arial;  opacity: 0.9; ";
-          likesEl.insertAdjacentHTML("afterbegin", '<i class="fa fa-thumbs-up" style="font-size:1.25em; color: #185dcc"></i>');
+          likesEl.insertAdjacentHTML(
+            "afterbegin",
+            '<i class="fa fa-thumbs-up" style="font-size:1.25em; color: #185dcc"></i>'
+          );
           likesEl.insertAdjacentText("afterbegin", `${peep.likes.length} `);
           peepContainer.insertAdjacentElement("beforeend", likesEl);
         }
@@ -242,8 +274,14 @@
             const deleteButtonEl = document.createElement("input");
             deleteButtonEl.setAttribute("type", "button");
             deleteButtonEl.setAttribute("value", "X");
-            deleteButtonEl.setAttribute("style", "float: right; color: red; margin-right: -1.5rem; margin-top: -1rem;");
-            const newButton = peepContainer.insertAdjacentElement("beforeend", deleteButtonEl);
+            deleteButtonEl.setAttribute(
+              "style",
+              "float: right; color: red; margin-right: -1.5rem; margin-top: -1rem;"
+            );
+            const newButton = peepContainer.insertAdjacentElement(
+              "beforeend",
+              deleteButtonEl
+            );
             newButton.addEventListener("click", () => {
               this.client.deletePeepById(peep.id, () => {
                 this.viewGetAllPeeps();
